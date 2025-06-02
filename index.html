@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercise Tracker | freeCodeCamp</title>
+    <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <!-- Link to style.css in the public folder -->
+    <link href="/style.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Exercise tracker</h1>
+      <form action="/api/users" method="post">
+        <h3>Create a New User</h3>
+        <p><code>POST /api/users</code></p>
+        <input id="uname" type="text" name="username" placeholder="username" required>
+        <input type="submit" value="Submit">
+      </form>
+      <form id="exercise-form" method="post"> <!-- Action will be set by JS -->
+        <h3>Add exercises</h3>
+        <p><code>POST /api/users/:_id/exercises</code></p>
+        <input id="uid" type="text" name="_id_param" placeholder=":_id (User ID)" required>
+        <input id="desc" type="text" name="description" placeholder="description*" required>
+        <input id="dur" type="number" name="duration" placeholder="duration* (mins.)" required>
+        <input id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)">
+        <input type="submit" value="Submit">
+      </form>
+      <p>
+        <strong>GET user's exercise log: </strong>
+        <code>GET /api/users/:_id/logs?[from][&to][&limit]</code>
+      </p>
+      <p><strong>[ ]</strong> = optional</p>
+      <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number (integer)</p>
+    </div>
+    <script>
+      const exerciseForm = document.getElementById("exercise-form");
+
+      exerciseForm.addEventListener("submit", (event) => {
+        // No preventDefault, let the form submit normally after setting action
+        const userId = document.getElementById("uid").value;
+        if (userId) {
+          exerciseForm.action = `/api/users/${userId}/exercises`;
+        } else {
+          // Prevent submission if user ID is missing, though "required" attribute should handle this
+          event.preventDefault();
+          alert("Please enter a User ID.");
+        }
+        // The name="_id_param" for the user ID input is just for clarity in the form;
+        // it won't be used by the backend if the ID is in the path.
+      });
+    </script>
+  </body>
+</html>
